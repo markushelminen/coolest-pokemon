@@ -16,12 +16,14 @@ const Home: NextPage = () => {
   const [ids, updateIds] = React.useState(getTwoPokemons());
   const [first, second] = ids; 
 
+  
   const firstPokemon = trpc.example.pokemonById.useQuery({id: first});
   const secondPokemon = trpc.example.pokemonById.useQuery({id: second});
-
+  
   const voteMutation = trpc.example.castVote.useMutation();
 
   const voteForCoolest = (id: number) => {
+    if(!first || !second) return;
     if(id === first) {
       voteMutation.mutate({votedFor: first, votedAgainst: second})
     } else {
@@ -66,10 +68,10 @@ export default Home;
 type Pokemon = inferRouterOutputs<typeof exampleRouter>['pokemonById']
 const PokemonListing: React.FC<{pokemon: Pokemon, vote: () => void}> = (props) => {
   return (
-    <div className="flex flex-col items-center">
-          <Image width={256} height={256} src={props.pokemon.spriteUrl} alt={props.pokemon.name} />
+    <div className="flex flex-col items-center transition-opacity" key={props.pokemon.id}>
           <div className="text-xl text-center capitalize -mt-8">{props.pokemon.name}</div>
-          <button className={btn} onClick={() => props.vote()}>Coolest</button>
+          <Image className="animate-fade-in" width={256} height={256} src={props.pokemon.spriteUrl} alt={props.pokemon.name} />
+          <button className={btn} onClick={() => props.vote()}>Cooler</button>
         </div>
   );
 }
