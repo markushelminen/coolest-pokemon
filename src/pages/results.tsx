@@ -31,7 +31,7 @@ const generateCountPercent = (pokemon: PokemonQueryResult[number]) => {
     return (VoteFor / (VoteFor + VoteAgainst)) * 100;
 }
 
-const PokemonListing: React.FC<{pokemon: PokemonQueryResult[number]}> = ({pokemon}) => {
+const PokemonListing: React.FC<{pokemon: PokemonQueryResult[number], rank: number}> = ({pokemon, rank}) => {
     return (
         <div className="relative flex border-b p-2 items-center justify-between">
             <div className="flex items-center">
@@ -44,7 +44,7 @@ const PokemonListing: React.FC<{pokemon: PokemonQueryResult[number]}> = ({pokemo
                 {generateCountPercent(pokemon) + '%'}
             </div>
             <div className="absolute top-0 left-0 z-20 flex items-center justify-center px-2 font-semibold text-white bg-gray-600 border border-gray-500 shadow-lg rounded-br-md">
-                
+            {rank}    
             </div>
         </div>
     );
@@ -60,7 +60,7 @@ const ResultsPage: React.FC<{pokemon: PokemonQueryResult}> = (props) => {
         <Link className="pb-4" href="/">Back</Link>
         <div className="flex flex-col w-full max-w-2xl border">
             {props.pokemon.map((currentPokemon, index) => {
-                return <PokemonListing pokemon={currentPokemon} key={index}></PokemonListing>
+                return <PokemonListing pokemon={currentPokemon} key={index} rank={index +1}></PokemonListing>
             })}
         </div>
     </div>
@@ -71,5 +71,6 @@ export default ResultsPage;
 
 export const getStaticProps: GetStaticProps = async () => {
     const pokemonOrdered = await getPokemonInOrder();
+    const DAY_IN_SECONDS = 60 * 60 * 24; // use later
     return { props: {pokemon: pokemonOrdered}, revalidate: 60 };
 }

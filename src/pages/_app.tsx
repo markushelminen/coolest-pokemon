@@ -6,12 +6,12 @@ import "../styles/globals.css";
 
 const MyApp: AppType = ({ Component, pageProps }) => {
   return (
-    <div className="">
+    <>
       <Head>
         <title>Coolest Pokèmon by markushelminen</title>
       </Head>
       <Component {...pageProps} />
-    </div>    
+    </>    
   );
 };
 

@@ -34,7 +34,7 @@ const Home: NextPage = () => {
   const fetchingNext = voteMutation.isLoading || isLoading;
 
   return (
-     <div className="h-screen w-screen flex flex-col justify-between items-center relative">
+     <div className="w-screen h-screen overflow-hidden flex flex-col justify-between items-center relative">
       <Head>
         <title>Coolest Pokèmon</title>
       </Head>
