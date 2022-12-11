@@ -1,14 +1,19 @@
 import { z } from "zod";
 import { router, publicProcedure } from "../trpc";
 import { prisma } from "../../db/client"
+import { getTwoPokemons } from "../../../utils/getRandomPokemon";
 
 export const exampleRouter = router({
-  pokemonById: publicProcedure
-  .input(z.object({id: z.number()}))
-  .query( async ({input}) => {
-    const pokemon = await prisma.pokemon.findFirst({ where: {id : input.id}});
-    if(!pokemon) throw new Error("lol doesn't exist")
-  return pokemon;
+  pokemonPair: publicProcedure
+  .query( async () => {
+    const [first, second] = getTwoPokemons();
+    if(!first ||!second) throw new Error("Util function failed!");
+    const bothPokemon = await prisma.pokemon.findMany({
+      where: {id: {in: [first, second] } },
+    });
+
+    if(bothPokemon.length !== 2) throw new Error("failed to find two pokemon");
+  return {firstPokemon: bothPokemon[0], secondPokemon: bothPokemon[1]};
   }),
   castVote: publicProcedure
     .input(z.object({
