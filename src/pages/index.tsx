@@ -48,7 +48,7 @@ const Home: NextPage = () => {
           </>
         <div className="p-2"></div>
       </div>)}
-      {!dataLoaded && (<Image width={192} height={192} src="rings.svg" alt="Loading..."></Image>)}
+      {!dataLoaded && (<Image width={192} height={192} src="/rings.svg" alt="Loading..."></Image>)}
       <div className="w-full text-xl text-center pb-2">
         <a href="https://github.com/markushelminen/coolest-pokemon">Github</a>
         <span className="p-4">{"-"}</span>

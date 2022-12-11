@@ -3,6 +3,7 @@ import type { AsyncReturnType } from "../utils/ts-bs";
 import { prisma } from "../server/db/client"
 import Image from 'next/image';
 import Head from "next/head";
+import Link from "next/link";
 
 
 const getPokemonInOrder = async () => {
@@ -56,6 +57,7 @@ const ResultsPage: React.FC<{pokemon: PokemonQueryResult}> = (props) => {
             <title>Coolest Pokemon Results</title>
         </Head>
         <h2 className="text-2xl p-4">Results</h2>
+        <Link className="pb-4" href="/">Back</Link>
         <div className="flex flex-col w-full max-w-2xl border">
             {props.pokemon.map((currentPokemon, index) => {
                 return <PokemonListing pokemon={currentPokemon} key={index}></PokemonListing>
