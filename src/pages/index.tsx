@@ -17,7 +17,14 @@ const Home: NextPage = () => {
   const firstPokemon = trpc.example.pokemonById.useQuery({id: first});
   const secondPokemon = trpc.example.pokemonById.useQuery({id: second});
 
+  const voteMutation = trpc.example.castVote.useMutation();
+
   const voteForCoolest = (id: number) => {
+    if(id === first) {
+      voteMutation.mutate({votedFor: first, votedAgainst: second})
+    } else {
+      voteMutation.mutate({votedFor: second, votedAgainst: first})
+    }
     updateIds(getTwoPokemons());
   }
 

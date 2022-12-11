@@ -16,7 +16,7 @@ export const exampleRouter = router({
       votedFor: z.number(),
       votedAgainst: z.number()
     }))
-    .query( async ({input}) => {
+    .mutation( async ({input}) => {
       const voteInDb = await prisma?.vote.create({
         data: {
           ...input
