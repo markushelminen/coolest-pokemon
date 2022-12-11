@@ -41,6 +41,9 @@ const Home: NextPage = () => {
         )}
         <div className="p-2"></div>
       </div>
+      <div className="absolute bottom-0 w-full text-xl text-center pb-2">
+        <a href="https://github.com/markushelminen/collest-pokemon">Github</a>
+      </div>
     </div>
   );
 };
