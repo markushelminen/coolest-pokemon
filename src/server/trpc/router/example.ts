@@ -1,15 +1,14 @@
 import { z } from "zod";
 import { router, publicProcedure } from "../trpc";
-
-import { PokemonClient } from "pokenode-ts";
+import { prisma } from "../../db/client"
 
 export const exampleRouter = router({
   pokemonById: publicProcedure
   .input(z.object({id: z.number()}))
   .query( async ({input}) => {
-    const pokeApiConnection = new PokemonClient();
-    const pokemon = await pokeApiConnection.getPokemonById(input.id);
-  return {name: pokemon.name, sprites: pokemon.sprites};
+    const pokemon = await prisma.pokemon.findFirst({ where: {id : input.id}});
+    if(!pokemon) throw new Error("lol doesn't exist")
+  return pokemon;
   }),
   castVote: publicProcedure
     .input(z.object({
@@ -17,9 +16,10 @@ export const exampleRouter = router({
       votedAgainst: z.number()
     }))
     .mutation( async ({input}) => {
-      const voteInDb = await prisma?.vote.create({
+      const voteInDb = await prisma.vote.create({
         data: {
-          ...input
+          votedForId: input.votedFor,
+          votedAgainstId: input.votedAgainst
         },
       });
     return {success: true, vote: voteInDb};
