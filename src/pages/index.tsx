@@ -2,6 +2,7 @@ import type { inferRouterOutputs } from "@trpc/server";
 import { type NextPage } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import Head from "next/head";
 import React from "react";
 import { getTwoPokemons } from "../utils/getRandomPokemon";
 import { trpc } from "../utils/trpc";
@@ -29,19 +30,23 @@ const Home: NextPage = () => {
     updateIds(getTwoPokemons());
   }
 
+  const dataLoaded = !firstPokemon.isLoading && firstPokemon.data && !secondPokemon.isLoading && secondPokemon.data;
+
   return (
-     <div className="h-screen w-screen flex flex-col justify-center items-center">
-      <div className="text-2xl text-center pb-4">Which Pokèmon is the Coolest?</div>
-      <div className="border rounded p-8 flex items-center justify-between max-w-2xl">
-        {!firstPokemon.isLoading && firstPokemon.data && !secondPokemon.isLoading && secondPokemon.data && (
+     <div className="h-screen w-screen flex flex-col justify-between items-center relative">
+      <Head>
+        <title>Coolest Pokèmon</title>
+      </Head>
+      <div className="text-2xl text-center pt-8">Which Pokèmon is the Coolest?</div>
+      { dataLoaded && (<div className="border rounded p-8 flex items-center justify-between max-w-2xl">
           <>
           <PokemonListing pokemon={firstPokemon.data} vote={() => voteForCoolest(first)}></PokemonListing>
           <div className="p-8">Vs</div>
           <PokemonListing pokemon={secondPokemon.data} vote={() => voteForCoolest(second)}></PokemonListing>
           </>
-        )}
         <div className="p-2"></div>
-      </div>
+      </div>)}
+      {!dataLoaded && (<Image width={192} height={192} src="rings.svg" alt="Loading..."></Image>)}
       <div className="w-full text-xl text-center pb-2">
         <a href="https://github.com/markushelminen/coolest-pokemon">Github</a>
         <span className="p-4">{"-"}</span>
