@@ -11,4 +11,17 @@ export const exampleRouter = router({
     const pokemon = await api.getPokemonById(input.id);
   return {name: pokemon.name, sprites: pokemon.sprites};
   }),
+  castVote: publicProcedure
+    .input(z.object({
+      votedFor: z.number(),
+      votedAgainst: z.number()
+    }))
+    .query( async ({input}) => {
+      const voteInDb = await prisma?.vote.create({
+        data: {
+          ...input
+        },
+      });
+    return {success: true, vote: voteInDb};
+    })
 });
